@@ -1,0 +1,19 @@
+
+stages:
+  - test
+
+
+before_script:
+  - 'set -eu'
+  - apt-get update
+  - apt-get -y upgrade
+  - apt-get -y dist-upgrade
+  - apt-get -y install make python3-minimal python3-pip
+  - pip install -r requirements.txt
+
+
+lint:
+  image: debian:latest
+  stage: test
+  script:
+    - make lint
