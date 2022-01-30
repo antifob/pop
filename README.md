@@ -1,7 +1,7 @@
 # pop
 
 `pop` is an offensive payload generator designed for portability,
-minimalisme and efficiency.
+minimalism and efficiency.
 
 
 ## Usage
