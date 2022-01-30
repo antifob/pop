@@ -22,20 +22,6 @@ def g(*args, encs=[]):
     return r
 
 
-def ctree():
-    r = {}
-    for i in dir(p):
-        if '_' in i or 'enc' == i:
-            continue
-
-        r[i] = {}
-        m = getattr(p, i)
-        for j in m:
-            r[i][j] = m[j].USAGE
-
-    return r
-
-
 def create_app():
     from flask import Flask, render_template, request, send_from_directory
 
@@ -43,7 +29,7 @@ def create_app():
 
     @app.route('/')
     def index():
-        return render_template('index.html', ctree=ctree())
+        return render_template('index.html')
 
     @app.route('/s/<path:path>')
     def spath(path):
@@ -52,12 +38,7 @@ def create_app():
     @app.route('/g', methods=['POST'])
     def gen():
         js = request.get_json(force=True)
-        print(js)
-        if 'c' not in js:
-            print('fail')
         try:
-            print(js['c'])
-            print(type(js['c']))
             if type(js['c']) is list:
                 return {'r': main(js['c'])}
             elif type(js['c']) is str:
@@ -96,7 +77,7 @@ def create_bot(update_commands=False):
         except Exception as e:
             o = str(e)
 
-        return '```\n{}\n```'.format(o)
+        return '```\n{}\n```'.format(o.strip())
 
     discord.set_route('/b/d')
 
