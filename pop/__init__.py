@@ -96,7 +96,7 @@ def create_bot(update_commands=False):
         except Exception as e:
             o = str(e)
 
-        return '```\n{}\n```'.format(o)
+        return '```\n{}\n```'.format(o.strip())
 
     discord.set_route('/b/d')
 
