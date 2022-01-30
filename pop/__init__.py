@@ -18,7 +18,6 @@
 #
 
 from pop import p
-from pop.__main__ import main
 
 
 def g(*args, encs=[]):
@@ -41,6 +40,7 @@ def g(*args, encs=[]):
 
 
 def create_app():
+    from pop.__main__ import main
     from flask import Flask, render_template, request, send_from_directory
 
     app = Flask(__name__)
@@ -72,6 +72,7 @@ def create_app():
 
 def create_bot(update_commands=False):
     import pop
+    from pop.__main__ import main
     from os import environ
 
     from flask_discord_interactions import DiscordInteractions, CommandOptionType

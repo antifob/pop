@@ -1,3 +1,5 @@
+/dist/
+/*.egg-info/
 /env.rc
 /venv/
 *.pyc

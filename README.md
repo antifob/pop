@@ -9,8 +9,8 @@ minimalism and efficiency.
 ### Command line
 
 ```
-cd repo/
-python3 -mpop -H
+pip install popsh
+python -mpop -H
 ```
 
 ### Discord application
