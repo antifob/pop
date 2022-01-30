@@ -7,6 +7,7 @@ all:
 	@printf '  flask\trun flask app\n'
 	@printf '  lint\tcheck formatting\n'
 	@printf '  dist\tbuild python package\n'
+	@printf '  publish\tpublish to pypi\n'
 
 
 flask:
