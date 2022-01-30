@@ -63,6 +63,8 @@ def manpage():
   pop is an offensive payload generator designed for portability,
   minimalism and efficiency.
 
+    https://gitlab.com/pgregoire/pop/
+
 USAGE
 
   {}
