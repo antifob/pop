@@ -1,4 +1,5 @@
 
+- custom Docker image with nim, msf and cosmo
 - rh-morbol
 - rc-cosmo
 - rc-nim
