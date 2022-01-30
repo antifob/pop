@@ -23,5 +23,5 @@ LANG = 'sh'
 EXEC = 'PAYLOAD'
 
 pl = '''
-ping ARG1
+ping -c1 ARG1
 '''
