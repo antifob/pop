@@ -6,6 +6,7 @@ all:
 	@printf '  clean\tremove cache files\n'
 	@printf '  flask\trun flask app\n'
 	@printf '  lint\tcheck formatting\n'
+	@printf '  git-push\tpublish to git remotes\n'
 	@printf '  dist\tbuild python package\n'
 	@printf '  publish\tpublish to pypi\n'
 
@@ -26,6 +27,10 @@ dist: .dist
 
 publish:
 	twine upload --repository pypi dist/*
+
+
+git-push:
+	git remote | xargs -n1 sh -c 'git push $$0 $$(git rev-parse --abbrev-ref HEAD)'
 
 
 clean:
