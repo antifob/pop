@@ -3,39 +3,6 @@ from pop import p
 from pop.__main__ import main
 
 
-def g(*args, encs=[]):
-    if 2 >= len(args):
-        raise Exception('not enough arguments')
-
-    t = getattr(p, args[0])
-    if t is None:
-        raise Exception('unknown payload type: {}'.format(args[0]))
-    if args[1] not in t:
-        raise Exception('unknown generator type: {}/{}'.format(*args[:2]))
-
-    r = ''
-    try:
-        r = t[args[1]].g(args[2:], encs).strip()
-    except Exception as e:
-        raise e
-
-    return r
-
-
-def ctree():
-    r = {}
-    for i in dir(p):
-        if '_' in i or 'enc' == i:
-            continue
-
-        r[i] = {}
-        m = getattr(p, i)
-        for j in m:
-            r[i][j] = m[j].USAGE
-
-    return r
-
-
 def create_app():
     from flask import Flask, render_template, request, send_from_directory
 
@@ -43,7 +10,7 @@ def create_app():
 
     @app.route('/')
     def index():
-        return render_template('index.html', ctree=ctree())
+        return render_template('index.html')
 
     @app.route('/s/<path:path>')
     def spath(path):
@@ -52,12 +19,9 @@ def create_app():
     @app.route('/g', methods=['POST'])
     def gen():
         js = request.get_json(force=True)
-        print(js)
         if 'c' not in js:
             print('fail')
         try:
-            print(js['c'])
-            print(type(js['c']))
             if type(js['c']) is list:
                 return {'r': main(js['c'])}
             elif type(js['c']) is str:
