@@ -1,55 +1,37 @@
-<!docType html>
+<!doctype html>
 <html lang=en>
 <head>
   <meta charset=utf-8/>
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <title>pop</title>
   <link rel="icon" type="image/png" href="/s/favicon.png">
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-  <style>
-    pre {
-      overflow-x: auto;
-      white-space: pre-wrap;
-      white-space: -moz-pre-wrap;
-      white-space: -pre-wrap;
-      white-space: -o-pre-wrap;
-      word-wrap: break-word;
-    }
-  </style>
+  <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery.terminal/js/jquery.terminal.min.js"></script>
+  <link href="https://cdn.jsdelivr.net/npm/jquery.terminal/css/jquery.terminal.min.css" rel="stylesheet"/>
 </head>
 <body>
-  <div class=container>
-    <div class="jumbotron jumbotron-fluid">
-      <div class=container>
-        <div class="font-weight-bold text-center" style="margin-top: 10px;">
-          <code>pop</code> is a simple utility designed to generate offensive payloads for a variety of tools.
-        </div>
-      </div>
-    </div>
 
-
-    <div id=a></div>
-    <div class=border style="margin-top:20px"><pre id=o></pre></div>
-  </div>
-
-  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-
-<script type=text/javascript>
-const autoCompleteJS = new autoComplete({
-    placeHolder: "Search for Food...",
-    data: {
-        src: ["Sauce - Thousand Island", "Wild Boar - Tenderloin", "Goat - Whole Cut"]
+<script>
+$('body').terminal({
+  help: function() {
+    this.echo('pop');
+  },
+  pop: function() {
+        idxs = Array.from(Array(arguments.length).keys());
+        args = idxs.map((i) => typeof(arguments[i])==='number' ? arguments[i].toString() : arguments[i]);
+        $.post('/g', JSON.stringify({c: args}), ((r) => {
+            if (r.error) {
+                this.echo(r.message);
+            } else {
+                this.echo(r.r);
+            }
+        }), 'json');
     },
-    highlight: false,
-    resultItem: {
-        highlight: {
-            render: false
-        }
-    }
+}, {
+    onCommandNotFound: ((c, t) => t.echo('command not found: ' + c)),
+    prompt: '$ ',
+    checkArity: false,
+    greetings: '',
 });
-
 </script>
 
 </body>

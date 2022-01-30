@@ -1,5 +1,6 @@
 
 from pop import p
+from pop.__main__ import main
 
 
 def g(*args, encs=[]):
@@ -51,10 +52,17 @@ def create_app():
     @app.route('/g', methods=['POST'])
     def gen():
         js = request.get_json(force=True)
+        print(js)
         if 'c' not in js:
             print('fail')
         try:
-            return {'r': g(*js['c'].split())}
+            print(js['c'])
+            print(type(js['c']))
+            if type(js['c']) is list:
+                return {'r': main(js['c'])}
+            elif type(js['c']) is str:
+                return {'r': main(js['c'].split())}
+            raise Exception('invalid argument')
         except Exception as e:
             return {'error': True, 'message': str(e)}
 
@@ -65,7 +73,6 @@ def create_app():
 
 def create_bot(update_commands=False):
     import pop
-    from pop.__main__ import main
     from os import environ
 
     from flask_discord_interactions import DiscordInteractions, CommandOptionType

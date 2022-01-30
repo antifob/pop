@@ -35,7 +35,7 @@ def ls(name=None):
 
 
 def usage():
-    u = '$0 [-Ehl] [-e encoder[,...]] type module [arg...]'
+    u = 'pop [-Ehl] [-e encoder[,...]] type module [arg...]'
     return 'usage: {}'.format(u)
 
 
