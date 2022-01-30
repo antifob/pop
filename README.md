@@ -1,6 +1,7 @@
 # pop
 
-`pop` is an offensive payload generator.
+`pop` is an offensive payload generator designed for portability,
+minimalisme and efficiency.
 
 
 ## Usage
@@ -9,7 +10,7 @@
 
 ```
 cd repo/
-python3 -mpop ...
+python3 -mpop -H
 ```
 
 ### Discord application
