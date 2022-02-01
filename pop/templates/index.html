@@ -9,13 +9,33 @@
   <link href="https://cdn.jsdelivr.net/npm/jquery.terminal/css/jquery.terminal.min.css" rel="stylesheet"/>
 </head>
 <body>
-
 <script>
 $('body').terminal({
-  help: function() {
-    this.echo('pop');
-  },
-  pop: function() {
+    help: function() {
+        this.echo('echo exit ls pop pwd');
+    },
+    echo: function() {
+        idxs = Array.from(Array(arguments.length).keys());
+        args = idxs.map((i) => typeof(arguments[i])==='number' ? arguments[i].toString() : arguments[i]);
+        this.echo(args.join(' '));
+    },
+    exit: function() {},
+    ls: function() {
+        idxs = Array.from(Array(arguments.length).keys());
+        args = idxs.map((i) => typeof(arguments[i])==='number' ? arguments[i].toString() : arguments[i]);
+        if (0 === args.length) {
+            this.echo(".\n..\n");
+        }
+        for (var i = 0 ; i < args.length ; i++) {
+            var s = args[i].split('/').filter((e) => '.' !== e && '..' !== e && '' !== e);
+            if (0 === s.length) {
+                this.echo(".\n..\n");
+            } else {
+                this.echo("ls: cannot access '" + args[i] + "': No such file or directory");
+            }
+        }
+    },
+    pop: function() {
         idxs = Array.from(Array(arguments.length).keys());
         args = idxs.map((i) => typeof(arguments[i])==='number' ? arguments[i].toString() : arguments[i]);
         $.post('/g', JSON.stringify({c: args}), ((r) => {
@@ -25,6 +45,9 @@ $('body').terminal({
                 this.echo(r.r);
             }
         }), 'json');
+    },
+    pwd: function() {
+        this.echo("/");
     },
 }, {
     onCommandNotFound: ((c, t) => t.echo('command not found: ' + c)),
