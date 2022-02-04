@@ -1,7 +1,7 @@
 FROM    kalilinux/kali-last-release:latest
 
 
-ENV	GO_VERSION=1.15
+ENV	GO_VERSION=1.17
 # https://nim-lang.org/install_unix.html
 ENV     NIM_VERSION=1.6.2
 ENV     NIM_HASH=9e0c616fe504402e29e43d44708a49416dcbfa295cee1883ce6e5bfb25c364f1
@@ -28,7 +28,10 @@ RUN     apt-get update && \
 
 RUN	cd /usr/src/ && \
 	git clone --depth=1 https://github.com/xct/morbol && \
-	GO111MODULE=off "/usr/lib/go-${GO_VERSION}/bin/go" get golang.org/x/sys/windows && \
+	cd /usr/src/morbol/ && \
+	printf 'module morbol\ngo %s\n' "${GO_VERSION}" >go.mod && \
+	sed -i -e 's|syscalls ".*|"morbol/syscalls"|' load.go && \
+	GOOS=windows GOARCH=amd64 "/usr/lib/go-${GO_VERSION}/bin/go" get golang.org/x/sys/windows && \
 	pip3 install donut-shellcode
 
 RUN     cd /opt/ && \
