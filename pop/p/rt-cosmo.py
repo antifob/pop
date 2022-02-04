@@ -17,10 +17,11 @@
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #
 
+import ipaddress
 import os
 
 
-USAGE = 'host port'
+USAGE = 'ipaddr port'
 NARGS = [2, 2]
 LANG = 'c'
 EXEC = ''
@@ -60,6 +61,11 @@ int main() {
 
 
 def g(s, args, dst, url):
+    try:
+        ipaddress.ip_address(args[0])
+    except ValueError:
+        raise Exception('Invalid IP address')
+
     with open('{}/src.c'.format(dst), 'w') as fp:
         fp.write(s)
 
