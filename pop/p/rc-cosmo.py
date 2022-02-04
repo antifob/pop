@@ -27,9 +27,10 @@ EXEC = ''
 
 pl = '''
 int main() {
-	system("CMD");
+    system("CMD");
 }
 '''.strip()
+
 
 def g(_, args, dst, url):
     # payload was not formatted
