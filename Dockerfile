@@ -13,15 +13,21 @@ RUN     apt-get update && \
         apt-get -y install \
                 gcc \
 		gcc-mingw-w64 \
+		git \
                 golang-1.17 \
                 metasploit-framework \
                 python3-pip \
                 unzip \
+		upx \
                 wget \
                 xz-utils \
         && \
         apt-get clean && \
         rm -rf /var/lib/apt/lists/*
+
+RUN	cd /usr/src/ && \
+	git clone --depth=1 https://github.com/xct/morbol && \
+	pip3 install donut-shellcode
 
 RUN     cd /opt/ && \
         wget "https://nim-lang.org/download/nim-${NIM_VERSION}-linux_x64.tar.xz" && \
