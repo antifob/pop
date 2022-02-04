@@ -4,12 +4,68 @@
 minimalism and efficiency. It is usable as a command-line tool,
 a Web application and a Discord app.
 
+Note that, depending on the payload generator, some dependencies might
+have to be satisfied, first. For example, the `rt-go` module requires
+the `go` binary to be available.
+
+
 ### Command-line tool
 
 ```
 pip install popsh
 python -mpop -H
 ```
+
+
+## Heroku
+
+Deployment to Heroku, whether for the web UI or the Discord applcation
+is quite simple. First, make sure you have an Heroku account and install
+the command-line tool locally. Then, simply create an app with the
+following command:
+
+```
+heroku apps:create
+```
+
+You'll be provided the randomly-generated identifier for the app. The
+app's publicly reachable URL will be `https://APPID.herokuapp.com/`.
+
+### Simple deployment (no dependencies)
+
+When you're ready to deploy the app, simply move to the project's
+repository and run the following command.
+
+```
+# first time only
+git remote add heroku https://git.heroku.com/$APPNAME.git
+
+# if deploying the Discord app (+ Web UI).
+. ./env.rc
+sh ./tools/heroku-set-config.sh $APPNAME
+
+# deploy the app
+git push heroku main
+```
+
+### Full deployment
+
+To deploy the application with all modules available, first make sure
+that `Docker` is available and run the following commands.
+
+```
+# Build the Docker image locally
+docker build -t pop
+# Login to the Heroku image registry
+docker login --username=_ --password=$(heroku auth:token) registry.heroku.com
+# Push the image to Heroku
+docker tag pop registry.heroku.com/$APPNAME/web
+docker push registry.heroku.com/$APPNAME/web
+
+# Deploy the image/app
+heroku container:release web
+```
+
 
 ## Discord application
 
@@ -38,35 +94,4 @@ export DISCORD_CLIENT_ID
 export DISCORD_PUBLIC_KEY
 export DISCORD_CLIENT_SECRET
 export DISCORD_GUILD_ID
-```
-
-## Heroku
-
-Deployment to Heroku, whether for the web UI or the Discord applcation
-is quite simple. First, make sure you have an Heroku account and install
-the command-line tool locally. Then, simply create an app with the
-following command:
-
-```
-heroku apps:create
-```
-
-You'll be provided the randomly-generated identifier for the app. The
-app's publicly reachable URL will be `https://APPID.herokuapp.com/`.
-
-### Deployment
-
-When you're ready to deploy the app, simply move to the project's
-repository and run the following command.
-
-```
-# first time only
-git remote add heroku https://git.heroku.com/$APPNAME.git
-
-# if deploying the Discord app (+ Web UI).
-. ./env.rc
-sh ./tools/heroku-set-config.sh $APPNAME
-
-# deploy the app
-git push heroku main
 ```

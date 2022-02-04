@@ -40,8 +40,9 @@ ADD     ./requirements.txt /tmp/requirements.txt
 RUN     pip3 install --no-cache-dir -r /tmp/requirements.txt && rm -f /tmp/requirements.txt
 ADD     ./pop/ /opt/pop
 
+RUN	rm -f /etc/profile.d/kali.sh
+
 RUN     useradd -s/bin/false -r pop
 USER    pop
 WORKDIR /opt/
-CMD     PATH="/opt/nim-${NIM_VERSION}/bin:/usr/lib/go-1.17/bin:\${PATH}" waitress-serve --call pop:create_app
-#CMD    waitress-serve --call pop:create_app
+CMD     PATH="/opt/nim-${NIM_VERSION}/bin:/usr/lib/go-1.17/bin:${PATH}" waitress-serve --call --port "${PORT}" pop:create_app
