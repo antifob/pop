@@ -1,5 +1,4 @@
 
-- custom Docker image with nim, msf and cosmo
 - rh-morbol
 - rc-cosmo
 - rc-nim
@@ -10,3 +9,5 @@
 - xd-pl
 - xd-py
 - img
+- README: Update Heroku documentation to use GitLab's Docker image
+- Docker image: build from Debian latest

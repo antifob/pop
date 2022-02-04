@@ -54,12 +54,16 @@ To deploy the application with all modules available, first make sure
 that `Docker` is available and run the following commands.
 
 ```
-# Build the Docker image locally
-docker build -t pop
+# Fetch the existing image
+docker pull registry.gitlab.com/pgregoire/pop:latest
+
+# Re-tag the image for Heroku
+docker tag registry.gitlab.com/pgregoire/pop:latest registry.heroku.com/$APPNAME/web
+
 # Login to the Heroku image registry
 docker login --username=_ --password=$(heroku auth:token) registry.heroku.com
+
 # Push the image to Heroku
-docker tag pop registry.heroku.com/$APPNAME/web
 docker push registry.heroku.com/$APPNAME/web
 
 # Deploy the image/app
