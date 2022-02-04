@@ -1,6 +1,7 @@
 FROM    kalilinux/kali-last-release:latest
 
 
+ENV	GO_VERSION=1.15
 # https://nim-lang.org/install_unix.html
 ENV     NIM_VERSION=1.6.2
 ENV     NIM_HASH=9e0c616fe504402e29e43d44708a49416dcbfa295cee1883ce6e5bfb25c364f1
@@ -14,7 +15,7 @@ RUN     apt-get update && \
                 gcc \
 		gcc-mingw-w64 \
 		git \
-                golang-1.17 \
+                "golang-${GO_VERSION}" \
                 metasploit-framework \
                 python3-pip \
                 unzip \
@@ -27,7 +28,7 @@ RUN     apt-get update && \
 
 RUN	cd /usr/src/ && \
 	git clone --depth=1 https://github.com/xct/morbol && \
-	GO111MODULE=off /usr/lib/go-1.17/bin/go get golang.org/x/sys/windows && \
+	GO111MODULE=off "/usr/lib/go-${GO_VERSION}/bin/go" get golang.org/x/sys/windows && \
 	pip3 install donut-shellcode
 
 RUN     cd /opt/ && \
@@ -53,4 +54,4 @@ RUN	rm -f /etc/profile.d/kali.sh
 RUN     useradd -m -r -s/bin/false pop
 USER    pop
 WORKDIR /opt/
-CMD     PATH="/opt/nim-${NIM_VERSION}/bin:/usr/lib/go-1.17/bin:${PATH}" waitress-serve --call --port "${PORT}" pop:create_bot
+CMD     PATH="/opt/nim-${NIM_VERSION}/bin:/usr/lib/go-${GO_VERSION}/bin:${PATH}" waitress-serve --call --port "${PORT}" pop:create_bot
