@@ -1,1 +1,1 @@
-web: python bot.py
+web: waitress-serve --call --port ${PORT} 'pop:create_bot'
