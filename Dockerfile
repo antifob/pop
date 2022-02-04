@@ -12,6 +12,7 @@ RUN     apt-get update && \
         apt-get -y upgrade && \
         apt-get -y install \
                 gcc \
+		gcc-mingw-w64 \
                 golang-1.17 \
                 metasploit-framework \
                 python3-pip \
@@ -42,7 +43,7 @@ ADD     ./pop/ /opt/pop
 
 RUN	rm -f /etc/profile.d/kali.sh
 
-RUN     useradd -s/bin/false -r pop
+RUN     useradd -m -r -s/bin/false pop
 USER    pop
 WORKDIR /opt/
-CMD     PATH="/opt/nim-${NIM_VERSION}/bin:/usr/lib/go-1.17/bin:${PATH}" waitress-serve --call --port "${PORT}" pop:create_app
+CMD     PATH="/opt/nim-${NIM_VERSION}/bin:/usr/lib/go-1.17/bin:${PATH}" waitress-serve --call --port "${PORT}" pop:create_bot
