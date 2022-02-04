@@ -28,8 +28,8 @@ RUN     cd /opt/ && \
         xz -cd ./nim* | tar -f- -x && \
         rm -rf *xz
 
-RUN     mkdir /opt/cosmo/ && \
-        cd /opt/cosmo/ && \
+RUN     mkdir /usr/src/cosmopolitan/ && \
+        cd /usr/src/cosmopolitan/ && \
         wget "https://github.com/jart/cosmopolitan/releases/download/${COSMO_VERSION}/cosmopolitan-amalgamation-${COSMO_VERSION}.zip" && \
         [ X"${COSMO_HASH}" = X$(sha256sum cosmo* | awk '{print $1;}') ] && \
         unzip *zip && \

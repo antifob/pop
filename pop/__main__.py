@@ -112,6 +112,7 @@ def main(args, dstdir=None, url=None):
     o_encs = ''
     o_noex = True
     o_dstdir = getcwd()
+    o_url = ''
     for k, v in opts:
         if '-E' == k:
             o_noex = False

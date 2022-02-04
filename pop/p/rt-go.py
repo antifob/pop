@@ -34,7 +34,6 @@ TARGETS = {
 USAGE = 'host port os-arch'
 NARGS = [3, 3]
 LANG = 'go'
-ISBIN = True
 EXEC = ''
 
 
