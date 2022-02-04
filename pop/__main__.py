@@ -32,7 +32,7 @@ def ls(name=None):
 
         t = getattr(pop.p, k).keys()
         if name is None:
-            o += '  {}\t'.format(k)
+            o += '  {:6}'.format(k)
         o += ' '.join(sorted(t)) + '\n'
 
     # TODO list supported encoders
@@ -46,7 +46,7 @@ def ls(name=None):
 
         t = getattr(pop.p, 'enc')[k].keys()
         if name is None:
-            o += '  {}\t'.format(k)
+            o += '  {:6}'.format(k)
         o += ' '.join(sorted(t)) + '\n'
 
     return o
@@ -69,12 +69,12 @@ USAGE
 
   {}
 
-  -E\tAdd example usage to output.
-  -H\tDisplay this help page.
-  -h\tDisplay a small usage line.
-  -l\tList generators and encoders.
-  -e\tA comma-separated list of encoders to use.
-    \t(not all encoders are supported by all languages)
+  -E    Add example usage to output.
+  -H    Display this help page.
+  -h    Display a small usage line.
+  -l    List generators and encoders.
+  -e    A comma-separated list of encoders to use.
+        (not all encoders are supported by all languages)
 
   type  The type of generators to use.
 
