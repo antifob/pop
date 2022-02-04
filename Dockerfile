@@ -27,6 +27,7 @@ RUN     apt-get update && \
 
 RUN	cd /usr/src/ && \
 	git clone --depth=1 https://github.com/xct/morbol && \
+	GO111MODULE=off /usr/lib/go-1.17/bin/go get golang.org/x/sys/windows && \
 	pip3 install donut-shellcode
 
 RUN     cd /opt/ && \
