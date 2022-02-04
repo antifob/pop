@@ -103,24 +103,32 @@ EXAMPLES
     '''.format(usage())[1:]
 
 
-def main(args):
+def main(args, dstdir=None, url=None):
+    from os import environ, getcwd
     from getopt import getopt, GetoptError
 
-    opts, args = getopt(args, 'EHe:hl')
+    opts, args = getopt(args, 'EHd:e:hl')
 
     o_encs = ''
     o_noex = True
+    o_dstdir = getcwd()
     for k, v in opts:
         if '-E' == k:
             o_noex = False
         elif '-H' == k:
             return manpage()
+        elif '-d' == k:
+            o_dstdir = v
         elif '-h' == k:
             return usage()
         elif '-l' == k:
             return ls()
         elif '-e' == k:
             o_encs = v
+
+    # cli: user, flask: server
+    o_dstdir = dstdir if dstdir else o_dstdir
+    o_url = url if url else o_url
 
     if 0 == len(args):
         raise Exception(usage())
@@ -142,7 +150,7 @@ def main(args):
         raise Exception(o)
 
     e = [e for e in o_encs.split(',') if e.strip()]
-    pl = pop.g(*args, encs=e)
+    pl = pop.g(*args, encs=e, dstdir=o_dstdir, url=o_url)
     if getattr(m, 'EXEC') and not o_noex:
         e = getattr(m, 'EXEC').strip()
         if e != 'PAYLOAD':

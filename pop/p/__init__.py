@@ -112,7 +112,7 @@ class Module():
 
         if 'g' == k:
             if r is None:
-                def r(args, encs):
+                def r(args, encs=[], dstdir=None, url=None):
                     if 0 > self.checkargs(args):
                         raise Exception('not enough arguments')
                     elif 0 < self.checkargs(args):
@@ -129,8 +129,9 @@ class Module():
                     return t
             else:
                 # atm, binaries don't have encoders
-                def r(a, _):
-                    return self.pymod.g(a)
+                def r(args, encs=[], dstdir=None, url=None):
+                    t = self.repl(args)
+                    return self.pymod.g(t, args, dstdir, url)
 
         return r
 

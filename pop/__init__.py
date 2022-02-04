@@ -20,8 +20,8 @@
 from pop import p
 
 
-def g(*args, encs=[]):
-    if 2 >= len(args):
+def g(*args, **kwargs):
+    if 2 > len(args):
         raise Exception('not enough arguments')
 
     t = getattr(p, args[0])
@@ -32,18 +32,44 @@ def g(*args, encs=[]):
 
     r = ''
     try:
-        r = t[args[1]].g(args[2:], encs).strip()
+        r = t[args[1]].g(args[2:], **kwargs).strip()
     except Exception as e:
         raise e
 
     return r
 
 
-def create_app():
+def rndstr(n=4):
+    from random import choice
+    from string import ascii_letters, digits
+
+    r = choice(ascii_letters)
+
+    for _ in range(n - 1):
+        r += choice(ascii_letters + digits)
+
+    return r
+
+
+def main(app, *cargs):
+    import os
     from pop.__main__ import main
+
+    r = rndstr(8)
+    d = os.path.join(app.config['POP_DESTDIR'], r)
+    os.mkdir(d)
+    u = os.environ['POP_URL'] + '/p/' + r + '/'
+
+    return main(*cargs, dstdir=d, url=u)
+
+
+def create_app():
     from flask import Flask, render_template, request, send_from_directory
+    from os import environ
 
     app = Flask(__name__)
+    app.config['POP_DESTDIR'] = environ['POP_DESTDIR']
+    app.config['POP_URL'] = environ['POP_URL']
 
     @app.route('/')
     def index():
@@ -53,14 +79,18 @@ def create_app():
     def spath(path):
         return send_from_directory('static', path)
 
+    @app.route('/p/<path:path>')
+    def ppath(path):
+        return send_from_directory(app.config['POP_DESTDIR'], path)
+
     @app.route('/g', methods=['POST'])
     def gen():
         js = request.get_json(force=True)
         try:
             if type(js['c']) is list:
-                return {'r': main(js['c'])}
+                return {'r': main(app, js['c'])}
             elif type(js['c']) is str:
-                return {'r': main(js['c'].split())}
+                return {'r': main(app, js['c'].split())}
             raise Exception('invalid argument')
         except Exception as e:
             return {'error': True, 'message': str(e)}
@@ -72,7 +102,6 @@ def create_app():
 
 def create_bot(update_commands=False):
     import pop
-    from pop.__main__ import main
     from os import environ
 
     from flask_discord_interactions import DiscordInteractions, CommandOptionType
@@ -92,7 +121,7 @@ def create_bot(update_commands=False):
     def pop(ctx, args=''):
         "generate a payload"
         try:
-            o = main(args.split())
+            o = main(app, args.split())
         except Exception as e:
             o = str(e)
 
