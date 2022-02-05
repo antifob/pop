@@ -29,8 +29,10 @@ publish:
 	twine upload --repository pypi dist/*
 
 
-git-push:
+git-push: .git-push-tags
 	git remote | xargs -n1 sh -c 'git push $$0 $$(git rev-parse --abbrev-ref HEAD)'
+.git-push-tags:
+	git remote | xargs -n1 sh -c 'git push $$0 --tags'
 
 
 clean:
