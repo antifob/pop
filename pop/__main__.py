@@ -79,8 +79,10 @@ USAGE
   type  The type of generators to use.
 
               bt  Bind TCP shells
+              img Injected images generators
               ns  DNS query generators (simple pokes)
               rc  Remote command executions (simple)
+              rh  Remove HTTP(S) shells
               rt  Reverse TCP shells
               ws  Web shells
               xd  DNS exfiltration payloads

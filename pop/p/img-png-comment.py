@@ -23,7 +23,7 @@ from PIL import Image
 from PIL.PngImagePlugin import PngImageFile, PngInfo
 
 
-USAGE = 'W H php-code'
+USAGE = 'W H content'
 NARGS = [3, 3]
 LANG = 'png'
 EXEC = ''
@@ -33,10 +33,8 @@ pl = ''
 
 def g(_, args, dst, url):
     dat = PngInfo()
-    php = ' '.join(args[2:]).strip()
-    if ';' != php[-1]:
-        php += ';'
-    dat.add_text('_', '<?php {}?>'.format(php))
+    txt = ' '.join(args[2:]).strip()
+    dat.add_text('_', txt)
 
     img = os.path.join(dst, 'img.png')
     png = Image.new('RGB', (int(args[0]), int(args[1])), color='black')

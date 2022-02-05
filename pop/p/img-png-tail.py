@@ -21,7 +21,7 @@ import os
 from PIL import Image
 
 
-USAGE = 'W H php-code'
+USAGE = 'W H content'
 NARGS = [3, 0]
 LANG = 'png'
 EXEC = ''
@@ -30,10 +30,7 @@ pl = ''
 
 
 def g(s, args, dst, url):
-    php = ' '.join(args[2:]).strip()
-    if ';' != php[-1]:
-        php += ';'
-    php = '<?php {}?>'.format(php).encode()
+    txt = ' '.join(args[2:]).strip().encode()
 
     img = os.path.join(dst, 'img.png')
     png = Image.new('RGB', (int(args[0]), int(args[1])), color='black')
@@ -42,6 +39,6 @@ def g(s, args, dst, url):
     with open(img, 'rb') as fp:
         png = fp.read()
     with open(img, 'wb') as fp:
-        fp.write(png + php)
+        fp.write(png + txt)
 
     return url + 'img.png'
