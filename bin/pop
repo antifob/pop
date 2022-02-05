@@ -1,0 +1,18 @@
+#!/bin/sh
+set -eu
+
+notfound() {
+	printf 'Cannot locate python 3 interpreter\n' >&2
+	exit 1
+}
+
+if command -v python3 2>/dev/null >/dev/null; then
+	exec python3 -mpop "${@}"
+elif command -v python 2>/dev/null >/dev/null; then
+	if python --version | grep -q '[[:space:]]2'; then
+		notfound
+	fi
+	exec python -mpop "${@}"
+fi
+
+notfound

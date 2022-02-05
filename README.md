@@ -13,7 +13,7 @@ the `go` binary to be available.
 
 ```
 pip install popsh
-python -mpop -H
+pop -H
 ```
 
 
